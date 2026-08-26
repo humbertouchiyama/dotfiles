@@ -1,0 +1,55 @@
+# ~/.config/ghostty/config
+# Reload after edit: Cmd+Shift+, (or quit/relaunch)
+# List themes: `ghostty +list-themes`   |   All keys: `ghostty +show-config --default`
+
+# ---- Font ----
+font-family = "JetBrains Mono"
+font-size = 14
+font-thicken = true
+# Comfortable line spacing for long log output
+adjust-cell-height = 8%
+
+# ---- Theme / surface ----
+theme = Catppuccin Mocha
+background-opacity = 0.97
+background-blur = 20
+window-colorspace = display-p3
+
+# ---- Window chrome ----
+window-padding-x = 14
+window-padding-y = 14
+window-padding-balance = true
+window-save-state = always
+macos-titlebar-style = transparent
+macos-option-as-alt = true
+
+# ---- Cursor ----
+cursor-style = bar
+cursor-style-blink = true
+
+# ---- Shell integration (auto-detects zsh) ----
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# ---- Startup ----
+# Only the FIRST surface Ghostty creates (i.e. the login-item launch) runs
+# this; every later manual new window/tab still opens a plain shell.
+# Script spawns a 2nd window for the "personal" herdr session, then execs
+# herdr (default session) in this one.
+initial-command = /Users/humbertocosta/.config/ghostty/init-sessions.sh
+
+# ---- Scrollback & behavior ----
+scrollback-limit = 100000
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+confirm-close-surface = false
+
+# ---- Keybinds (Warp-ish muscle memory) ----
+keybind = cmd+k=clear_screen
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+left_bracket=goto_split:left
+keybind = cmd+right_bracket=goto_split:right
+keybind = cmd+enter=toggle_fullscreen

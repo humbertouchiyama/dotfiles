@@ -1,0 +1,11 @@
+# ~/.zshenv — sourced by EVERY zsh (interactive, non-interactive, scripts).
+# 'name' lives here (not .zshrc) so `!name` inside Claude works even when the
+# bang/tool spawns a NON-interactive shell that skips .zshrc.
+
+# Name the current herdr agent/pane (agents panel + border) and, if Claude is
+# running in this pane, also set its /rename title. Guard skips the injection at a
+# bare shell so we never type "/rename" into zsh.
+name() { herdr agent rename "$HERDR_PANE_ID" "$1" >/dev/null 2>&1; }
+# Note: NO /rename injection — sending keystrokes into the pane that's running
+# Claude interrupts its turn. For the Claude session title, type /rename natively;
+# a Stop hook mirrors it to the herdr name (see ~/.claude/hooks/herdr-sync-title.sh).

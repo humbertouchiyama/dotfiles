@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Block a commit whose staged content looks like a credential.
+#
+# This repo is PUBLIC and public is permanent: a secret pushed once is
+# compromised even if the next commit removes it, because unreferenced
+# commits stay reachable and scrapers are fast. So the guard runs at commit
+# time, not at review time.
+#
+# Install:  git config core.hooksPath githooks
+set -uo pipefail
+
+PATTERNS='ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|ghs_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}|sk_live_[A-Za-z0-9]{20,}|sntryu_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY-----|dpg-[a-z0-9]{16,}|tea-[a-z0-9]{16,}|(postgres|postgresql|mongodb\+srv|redis|amqp)://[^[:space:]/]+:[^[:space:]@]+@'
+
+fail=0
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  if git show ":$f" 2>/dev/null | grep -nEq "$PATTERNS"; then
+    echo "BLOCKED: credential-shaped string in staged file: $f" >&2
+    git show ":$f" | grep -nE "$PATTERNS" \
+      | sed -E 's/(ghp_|gho_|ghs_|github_pat_|sk-|sk_live_|sntryu_|xox[baprs]-|AKIA|ASIA|AIza)[A-Za-z0-9_-]+/\1***MASKED***/g' \
+      | sed -E 's#(://[^:]+:)[^@]+@#\1***MASKED***@#g' >&2
+    fail=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACM)
+
+if [ "$fail" -ne 0 ]; then
+  cat >&2 <<'MSG'
+
+Commit refused. This repo is public — do not "commit now, clean later".
+Remove the value, then commit. If it is a genuine false positive:
+  git commit --no-verify
+MSG
+  exit 1
+fi
+exit 0

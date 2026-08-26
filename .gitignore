@@ -1,0 +1,25 @@
+# Backups created by install.sh
+*.bak
+*.bak-*
+.DS_Store
+
+# Files that belong in the PRIVATE repo. Named by their path IN THIS REPO —
+# a $HOME-style pattern (.claude/settings.json) silently matches nothing here.
+claude/settings.json
+claude/CLAUDE.md
+claude/RTK.md
+claude/memory/
+ssh/
+
+# Never in any repo
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+**/credentials
+**/*service*account*.json
+**/application_default_credentials.json
+.claude.json
+hosts.yml

@@ -1,0 +1,73 @@
+onboarding = false
+# ~/.config/herdr/config.toml
+# Ported from your tmux setup (~/.tmux.conf). Reload after edits:
+#   herdr server reload-config   (or restart herdr)
+#
+# Almost nothing needed porting — herdr's defaults already match what you had:
+#   • vi copy-mode with v/y and y→system clipboard = your `mode-keys vi` + y→pbcopy
+#   • directional pane-swap already on prefix+Shift+h/j/k/l
+# So the only real change is the prefix.
+
+[keys]
+prefix = "ctrl+z"          # matches your tmux `set -g prefix C-z`
+
+# Pane SWAP — spatial ijkl (i=up, j=left, k=down, l=right)
+swap_pane_up    = "prefix+i"
+swap_pane_left  = "prefix+j"
+swap_pane_down  = "prefix+k"
+swap_pane_right = "prefix+l"
+
+# Pane FOCUS — moved to arrows (j/k/l were the default focus keys, now used by swap above)
+focus_pane_left  = "prefix+left"
+focus_pane_down  = "prefix+down"
+focus_pane_up    = "prefix+up"
+focus_pane_right = "prefix+right"
+
+# Workspace switch by index — prefix+1..9 jumps straight to workspace N.
+# Overrides default prefix+1..9 = switch_tab (freed: 1 tab per workspace).
+switch_workspace = "prefix+1..9"
+switch_tab = ""
+
+# copy mode — back on its default `[` (freed now that swap uses ijkl)
+copy_mode = "prefix+["
+# Action names verified against the herdr 0.7.2 binary — herdr does NOT validate
+# unknown action names (silently ignores), so these were confirmed, not guessed.
+
+# --- Reference: a few defaults that DIFFER from tmux (relearn these) ---
+# split_horizontal = "prefix+v"      # tmux was prefix+%
+# split_vertical   = "prefix+-"      # tmux was prefix+"
+# copy_mode        = "prefix+["      # same as tmux
+# zoom             = "prefix+z"      # same as tmux
+# detach           = "prefix+q"      # tmux was prefix+d
+# new_tab          = "prefix+c"      # ~ tmux new-window
+
+# --- Custom command binds work like this (example, commented) ---
+# [[keys.command]]
+# key = "prefix+alt+g"
+# type = "pane"
+# command = "lazygit"
+# description = "run lazygit in a new pane"
+
+[ui]
+# High-contrast selected-pane border + highlights/nav UI (was muted catppuccin mauve).
+accent = "#FFB703"
+agent_panel_sort = "priority"
+
+show_agent_labels_on_pane_borders = true
+[theme.custom]
+# Brighter name/secondary text only. overlay0/overlay1 reverted — they also colored
+# UNSELECTED pane borders/dividers (lit up inactive panes). text/subtext0 don't touch borders.
+text = "#FFFFFF"       # agents-panel primary name
+subtext0 = "#CDD6F4"   # secondary text + pane labels (was #a6adc8)
+
+[experimental]
+# Keep recent pane scrollback across a full server restart (reboot). Without
+# this, panes and agent conversations come back but the screen is blank.
+pane_history = true
+
+[ui.toast]
+delivery = "system"
+
+[theme]
+name = "dracula"
+auto_switch = false
