@@ -2,6 +2,18 @@
 # 'name' lives here (not .zshrc) so `!name` inside Claude works even when the
 # bang/tool spawns a NON-interactive shell that skips .zshrc.
 
+# Homebrew belongs here for the same reason. `brew shellenv` runs from .zprofile
+# (login shells) and .zshrc (interactive ones), so a non-interactive zsh — the kind
+# Claude Code's Bash tool spawns — got neither, and every /opt/homebrew/bin binary
+# was missing. That broke the RTK PreToolUse hook in particular: it rewrites
+# `git status` into `rtk git status`, and the bare `rtk` then failed with
+# "command not found: rtk". Same for gh, herdr, and the rest.
+# Guarded so nested shells do not stack duplicate entries.
+case ":$PATH:" in
+  *":/opt/homebrew/bin:"*) ;;
+  *) export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" ;;
+esac
+
 # Name the current herdr agent/pane (agents panel + border) and, if Claude is
 # running in this pane, also set its /rename title. Guard skips the injection at a
 # bare shell so we never type "/rename" into zsh.
