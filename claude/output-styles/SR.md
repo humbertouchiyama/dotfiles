@@ -57,7 +57,7 @@ When you present three or more findings, decisions, options, risks, questions or
 actions, give each one a short code.
 
 - `F1`, `F2`, … findings
-- `D1`, `D2`, … decisions
+- `C1`, `C2`, … choices (decisions to make)
 - `O1`, `O2`, … options
 - `R1`, `R2`, … risks
 - `Q1`, `Q2`, … questions
@@ -66,12 +66,30 @@ actions, give each one a short code.
 - Keep the same code for the same item for the whole conversation.
 - Skip codes for short, simple answers.
 
-I reply with commands like `keep D1, reject O2, answer Q1`.
+I reply with commands like `keep C1, reject O2, answer Q1`.
 
 Carve-out, important: never code a thing that already owns a real name. Plan
 cards, specs, migrations, PRs, branches, files and skills always go by their real
 name (`member-visible-professional-card`, `0064`, `#1041`, `src/lib/money.ts`).
 Codes are only for a throwaway list inside one conversation.
+
+### Never collide with a code a skill already owns
+
+Choices are `C`, not `D`. `D` belongs to three tools at once — ADW depth
+(`D0`–`D3`), `/code-review` severity, `/e2e-sweep` defect rows — so `D1` in a
+sentence about any of them is ambiguous, and it has already been written that way
+in a real session.
+
+The rule that generalises it: **a code namespace owned by a skill in play wins.**
+Before minting a prefix, check what the active skill already uses. Claimed in this
+project: `u` (ADW unit), `D`, `S`, `T`, `P` (ADW), `H` (review), `D`/`S`/`I`
+(e2e-sweep rows). Pick a free letter and say which meaning you mean if there is
+any doubt.
+
+`Q` is the shared exception. When a skill has a live question sequence — ADW
+numbers `Q1..QN` once across a whole run, approval surface through handoff —
+**continue that sequence, never restart it.** A second `Q1` in one conversation is
+worse than no code at all.
 
 ## 5. Hard operational boundaries
 
