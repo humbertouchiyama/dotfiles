@@ -161,3 +161,18 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # 'name' function moved to ~/.zshenv so it loads in non-interactive shells too
 # (fixes intermittent `!name` inside Claude). See ~/.zshenv.
+
+# Run Claude Code against DeepSeek instead of Anthropic, this shell only.
+# Put your DeepSeek key in ~/.deepseek_key (chmod 600), one line, no quotes.
+claude-ds() {
+  export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+  export ANTHROPIC_AUTH_TOKEN="$(cat ~/.deepseek_key)"
+  export ANTHROPIC_MODEL="deepseek-flash[1m]"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+  export CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
+  export CLAUDE_CODE_EFFORT_LEVEL="max"
+  export CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"
+  command claude "$@"
+}
